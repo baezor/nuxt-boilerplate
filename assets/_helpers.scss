@@ -1,0 +1,39 @@
+// Responsive helpers
+.hidden-xs {
+  @media(max-width:$breakpoint-sm-max) {
+    display: none;
+  }
+}
+
+.visible-xs {
+  @media(max-width:$breakpoint-sm-max) {
+    display: block;
+  }
+}
+
+// Text align helpers
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+// Text size helpers
+.text-small {
+  font-size: $font-size-sm;
+}
+
+.uc, .uppercase {
+  text-transform: uppercase;
+}
+
+//
+.pull-right {
+  float: right;
+}

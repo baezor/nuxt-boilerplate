@@ -1,0 +1,54 @@
+22:48:43.733 INFO - Selenium build info: version: '3.4.0', revision: 'unknown'
+22:48:43.736 INFO - Launching a standalone Selenium Server
+2017-08-06 22:48:43.808:INFO::main: Logging initialized @728ms to org.seleniumhq.jetty9.util.log.StdErrLog
+22:48:43.981 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
+ registration capabilities Capabilities [{ensureCleanSession=true, browserName=internet explorer, version=, platform=WINDOWS}] does not match the current platform MAC
+22:48:43.981 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
+ registration capabilities Capabilities [{browserName=MicrosoftEdge, version=, platform=WINDOWS}] does not match the current platform MAC
+22:48:43.982 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+22:48:43.982 INFO - Driver provider com.opera.core.systems.OperaDriver registration is skipped:
+Unable to create new instances on this machine.
+22:48:43.982 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+22:48:43.982 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
+2017-08-06 22:48:44.112:INFO:osjs.Server:main: jetty-9.4.3.v20170317
+2017-08-06 22:48:44.184:INFO:osjsh.ContextHandler:main: Started o.s.j.s.ServletContextHandler@14acaea5{/,null,AVAILABLE}
+2017-08-06 22:48:44.244:INFO:osjs.AbstractConnector:main: Started ServerConnector@e25b2fe{HTTP/1.1,[http/1.1]}{0.0.0.0:4444}
+2017-08-06 22:48:44.245:INFO:osjs.Server:main: Started @1165ms
+22:48:44.245 INFO - Selenium Server is up and running
+22:48:45.051 INFO - SessionCleaner initialized with insideBrowserTimeout 0 and clientGoneTimeout 1800000 polling every 180000
+22:48:45.125 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, name=Logo, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+22:48:45.171 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, name=Logo, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.31.488774 (7e15618d1bf16df8bf0ecf2914ed1964a387ba0b) on port 44636
+Only local connections are allowed.
+22:48:48.552 INFO - Detected dialect: OSS
+22:48:48.601 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, name=Logo, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+22:48:48.687 INFO - Executing: [get: http://localhost:3000])
+22:49:39.991 INFO - Done: [get: http://localhost:3000]
+22:49:40.108 INFO - Executing: [find elements: By.cssSelector: .logo])
+22:49:40.257 INFO - Done: [find elements: By.cssSelector: .logo]
+22:49:40.291 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (fa0186137c7909f023f8ac825c3f94cd)] -> css selector: .logo]])
+22:49:40.343 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (fa0186137c7909f023f8ac825c3f94cd)] -> css selector: .logo]]
+22:49:40.372 INFO - Executing: [find element: By.cssSelector: .logo])
+22:49:40.417 INFO - Done: [find element: By.cssSelector: .logo]
+22:49:40.447 INFO - Executing: [get text: 0 [[ChromeDriver: chrome on MAC (fa0186137c7909f023f8ac825c3f94cd)] -> css selector: .logo]])
+22:49:40.501 INFO - Done: [get text: 0 [[ChromeDriver: chrome on MAC (fa0186137c7909f023f8ac825c3f94cd)] -> css selector: .logo]]
+22:49:40.525 INFO - Executing: [delete session: 3acf8fd1-b121-43bb-a6bd-1f458d4e7429])
+22:49:40.729 INFO - Done: [delete session: 3acf8fd1-b121-43bb-a6bd-1f458d4e7429]
+22:49:40.814 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+22:49:40.823 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.31.488774 (7e15618d1bf16df8bf0ecf2914ed1964a387ba0b) on port 42223
+Only local connections are allowed.
+22:49:42.810 INFO - Detected dialect: OSS
+22:49:42.842 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+22:49:42.911 INFO - Executing: [get: http://localhost:3000])
+22:49:44.221 INFO - Done: [get: http://localhost:3000]
+22:49:44.239 INFO - Executing: [find elements: By.cssSelector: #__nuxt])
+22:49:44.304 INFO - Done: [find elements: By.cssSelector: #__nuxt]
+22:49:44.313 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (f3a3b0156f21ba0a9b20baa2f5691984)] -> css selector: #__nuxt]])
+22:49:44.350 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (f3a3b0156f21ba0a9b20baa2f5691984)] -> css selector: #__nuxt]]
+22:49:44.369 INFO - Executing: [find element: By.cssSelector: h1])
+22:49:44.407 INFO - Done: [find element: By.cssSelector: h1]
+22:49:44.423 INFO - Executing: [get text: 1 [[ChromeDriver: chrome on MAC (f3a3b0156f21ba0a9b20baa2f5691984)] -> css selector: h1]])
+22:49:44.458 INFO - Done: [get text: 1 [[ChromeDriver: chrome on MAC (f3a3b0156f21ba0a9b20baa2f5691984)] -> css selector: h1]]
+22:49:44.471 INFO - Executing: [delete session: dfc99c73-85c1-4158-9f0f-05f0670105d1])
+22:49:44.559 INFO - Done: [delete session: dfc99c73-85c1-4158-9f0f-05f0670105d1]

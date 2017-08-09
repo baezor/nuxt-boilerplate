@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="Logo"
+    errors="0" failures="0" hostname="" id="" package="Logo" skipped="0"
+    tests="1" time="56.00" timestamp="Sun, 06 Aug 2017 20:48:44 GMT">
+  
+    <testcase name="logo e2e test" classname="Logo" time="56.00" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

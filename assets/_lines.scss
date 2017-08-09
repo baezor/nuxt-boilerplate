@@ -1,0 +1,14 @@
+.line {
+  background-color: $foreground;
+  display: block;
+}
+
+.line--vertical {
+  width: 2px;
+  height: $padding-lg;
+}
+
+.line--horizontal {
+  height: 2px;
+  width: $padding-lg;
+}

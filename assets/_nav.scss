@@ -1,0 +1,13 @@
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav--social {
+  li {
+    display: inline-block;
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+}

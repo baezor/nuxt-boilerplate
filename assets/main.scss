@@ -1,0 +1,35 @@
+@import 'variables';
+
+@import 'fonts';
+@import 'helpers';
+@import 'images';
+@import 'layout';
+@import 'lines';
+@import 'nav';
+@import 'selection';
+@import 'sizing';
+
+body {
+  font-family: 'CPMono_v07', monospace;
+  margin: 0;
+  padding: 0;
+  font-size: $font-size-base;
+  background-color: $background;
+}
+
+.wrapper {
+  padding: $padding-lg;
+  height: 100vh;
+}
+
+a {
+  color: $foreground;
+  text-decoration: none;
+  &:hover {
+    color: $foreground;
+  }
+}
+
+h2 {
+  @extend .uc;
+}
