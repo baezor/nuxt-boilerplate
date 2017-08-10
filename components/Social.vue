@@ -10,7 +10,7 @@
   <div class="social">
     <ul class="nav nav--social">
       <li>
-        <a href="https://www.github.com" target="_blank" rel="external">Github</a>
+        <a href="https://github.com/madesane/" target="_blank" rel="external">Github</a>
       </li>
       <li>
         <a href="https://www.medium.com" target="_blank" rel="external">Medium</a>

@@ -131,7 +131,7 @@ var port = process.env.PORT || 3000;
 app.set('port', port);
 
 // MongoDb
-var mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/weeker';
+var mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/portfolio';
 _mongoose2.default.Promise = global.Promise;
 _mongoose2.default.connect(mongodbhost);
 
@@ -189,23 +189,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _express = __webpack_require__(0);
 
-var _tasks = __webpack_require__(8);
+var _case = __webpack_require__(8);
 
-var _tasks2 = _interopRequireDefault(_tasks);
+var _case2 = _interopRequireDefault(_case);
 
-var _week = __webpack_require__(10);
+var _openSource = __webpack_require__(10);
 
-var _week2 = _interopRequireDefault(_week);
+var _openSource2 = _interopRequireDefault(_openSource);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express.Router)();
 
-// Add TASKS Routes
-router.use(_tasks2.default);
+// Add Cases Routes
+router.use(_case2.default);
 
-// Add WEEK Routes
-router.use(_week2.default);
+// Add OpenSource Routes
+router.use(_openSource2.default);
 
 exports.default = router;
 
@@ -222,27 +222,76 @@ Object.defineProperty(exports, "__esModule", {
 
 var _express = __webpack_require__(0);
 
-var _task = __webpack_require__(9);
+var _case = __webpack_require__(9);
 
-var _task2 = _interopRequireDefault(_task);
+var _case2 = _interopRequireDefault(_case);
+
+var _formidable = __webpack_require__(13);
+
+var _formidable2 = _interopRequireDefault(_formidable);
+
+var _fs = __webpack_require__(14);
+
+var _fs2 = _interopRequireDefault(_fs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express.Router)();
 
-/* GET users listing. */
-router.get('/tasks', function (req, res, next) {
-  _task2.default.find({}, function (err, task) {
+/* GET all cases */
+router.get('/cases', function (req, res) {
+  _case2.default.find({}, function (err, cases) {
     if (err) res.send(err);
-    res.json(task);
+    res.json(cases);
   });
 });
 
-router.post('/tasks', function (req, res) {
-  var new_task = new _task2.default(req.body);
-  new_task.save(function (err, task) {
+/* GET one case by slug */
+router.get('/cases/:slug', function (req, res) {
+  _case2.default.findOne({ slug: req.params.slug }, function (err, oneCase) {
     if (err) res.send(err);
-    res.json(task);
+    res.json(oneCase);
+  });
+});
+
+/* POST create new case */
+router.post('/case', function (req, res) {
+  var form = new _formidable2.default.IncomingForm();
+  var uploadDir = 'static/storage';
+  form.multiples = true;
+  var files = [];
+  form.keepExtensions = true;
+  form.on('field', function (name, value) {
+    if (name === 'title') {
+      if (!_fs2.default.existsSync(uploadDir + '/' + value)) {
+        _fs2.default.mkdirSync(uploadDir + '/' + value);
+      }
+      form.uploadDir = uploadDir + '/' + value;
+    }
+  });
+  form.on('file', function (field, file) {
+    // console.log(field, file, file.name);
+    files.push([field, file]);
+    _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
+  });
+  console.log(files);
+  form.parse(req, function (err, fields, files) {
+    console.log(files);
+    // const new_case = new Cases(fields);
+    /* new_case.save(function(err, caseData) {
+      if (err)
+        res.send(err);
+      res.json(caseData);
+    }); */
+  });
+});
+
+/* POST update week */
+router.post('/week/update', function (req, res) {
+  var data = req.body;
+  Week.findOneAndUpdate({ number: data.number, year: data.year }, req.body, { new: true }, function (err, week) {
+    if (err) res.send(err);
+    res.json(week);
   });
 });
 
@@ -258,25 +307,30 @@ exports.default = router;
 var mongoose = __webpack_require__(1);
 var Schema = mongoose.Schema;
 
-var TaskSchema = new Schema({
-  name: {
+var CaseSchema = new Schema({
+  title: {
     type: String,
-    Required: 'Kindly enter the name of the task'
+    Required: 'Kindly enter the title of case'
   },
-  Created_date: {
-    type: Date,
-    default: Date.now
+  slug: {
+    type: String,
+    Required: 'Slug is required'
   },
-  status: {
-    type: [{
-      type: String,
-      enum: ['pending', 'ongoing', 'completed']
-    }],
-    default: ['pending']
+  category: {
+    type: String
+  },
+  desc: {
+    type: String
+  },
+  year: {
+    type: Number
+  },
+  link: {
+    type: String
   }
 });
 
-module.exports = mongoose.model('Tasks', TaskSchema);
+module.exports = mongoose.model('Case', CaseSchema);
 
 /***/ }),
 /* 10 */
@@ -291,39 +345,36 @@ Object.defineProperty(exports, "__esModule", {
 
 var _express = __webpack_require__(0);
 
-var _week = __webpack_require__(11);
+var _openSource = __webpack_require__(11);
 
-var _week2 = _interopRequireDefault(_week);
+var _openSource2 = _interopRequireDefault(_openSource);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express.Router)();
 
-/* GET users listing. */
-router.get('/week/:year/:number', function (req, res, next) {
-  console.log('hola prdel');
-  _week2.default.findOne({ year: req.params.year, number: req.params.number }, function (err, week) {
+/* GET all open source projects */
+router.get('/open-source', function (req, res) {
+  _openSource2.default.find({}, function (err, openSources) {
     if (err) res.send(err);
-    console.log(week);
-    res.json(week);
+    res.json(openSources);
   });
 });
 
-/* POST create new week */
-router.post('/week', function (req, res) {
-  var new_week = new _week2.default(req.body);
-  new_week.save(function (err, week) {
+/* GET one open source project by slug */
+router.get('/open-source/:slug', function (req, res) {
+  _openSource2.default.findOne({ slug: req.params.slug }, function (err, openSource) {
     if (err) res.send(err);
-    res.json(week);
+    res.json(openSource);
   });
 });
 
-/* POST update week */
-router.post('/week/update', function (req, res) {
-  var data = req.body;
-  _week2.default.findOneAndUpdate({ number: data.number, year: data.year }, req.body, { new: true }, function (err, week) {
+/* POST create new open source project */
+router.post('/open-source', function (req, res) {
+  var new_case = new _openSource2.default(req.body);
+  new_case.save(function (err, openSource) {
     if (err) res.send(err);
-    res.json(week);
+    res.json(openSource);
   });
 });
 
@@ -339,32 +390,30 @@ exports.default = router;
 var mongoose = __webpack_require__(1);
 var Schema = mongoose.Schema;
 
-var WeekSchema = new Schema({
-  number: {
-    type: Number,
-    Required: 'Kindly enter the number of week'
+var OpenSourceSchema = new Schema({
+  title: {
+    type: String,
+    Required: 'Kindly enter the title of case'
+  },
+  slug: {
+    type: String,
+    Required: 'Slug is required'
+  },
+  category: {
+    type: String
+  },
+  desc: {
+    type: String
   },
   year: {
     type: Number
   },
-  Created_date: {
-    type: Date,
-    default: Date.now
-  },
-  content: {
-    type: String,
-    default: ''
-  },
-  status: {
-    type: [{
-      type: String,
-      enum: ['passed', 'actual']
-    }],
-    default: ['actual']
+  link: {
+    type: String
   }
 });
 
-module.exports = mongoose.model('Week', WeekSchema);
+module.exports = mongoose.model('OpenSource', OpenSourceSchema);
 
 /***/ }),
 /* 12 */
@@ -405,6 +454,18 @@ module.exports = {
     }
   }
 };
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = require("formidable");
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
 
 /***/ })
 /******/ ]);

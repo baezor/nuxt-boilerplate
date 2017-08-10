@@ -5,7 +5,7 @@
 }
 </style>
 <template>
-  <router-link to="'/'" class="logo" v-html="content"></router-link>
+  <router-link :to="{ path: '/' }" class="logo" v-html="content"></router-link>
 </template>
 <script>
   export default {

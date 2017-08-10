@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 app.set('port', port);
 
 // MongoDb
-const mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/weeker';
+const mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/portfolio';
 mongoose.Promise = global.Promise;
 mongoose.connect(mongodbhost);
 

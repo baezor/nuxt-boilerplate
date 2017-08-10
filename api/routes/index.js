@@ -1,14 +1,14 @@
 import { Router } from 'express'
 
-import tasks from './tasks'
-import week from './week'
+import cases from './case'
+import openSource from './openSource'
 
 const router = Router();
 
-// Add TASKS Routes
-router.use(tasks);
+// Add Cases Routes
+router.use(cases);
 
-// Add WEEK Routes
-router.use(week);
+// Add OpenSource Routes
+router.use(openSource);
 
 export default router;
