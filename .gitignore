@@ -12,3 +12,8 @@ dist
 
 # OS X
 .DS_Store
+
+# Storage
+static/storage/*
+
+!static/storage/.gitkeep
