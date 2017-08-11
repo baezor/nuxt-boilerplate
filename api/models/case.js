@@ -21,7 +21,10 @@ var CaseSchema = new Schema({
   },
   link: {
     type: String,
-  }
+  },
+  images: {
+    type: Array,
+  },
 });
 
 module.exports = mongoose.model('Case', CaseSchema);

@@ -11,9 +11,30 @@
         }
       }
     }
+  .right {
+    position: relative;
+    &.dragging {
+       border: 1px solid;
+        .previews {
+          z-index: -1;
+        }
+     }
   .dropzone {
     width: 100%;
     height: 100%;
+    opacity: 0;
+  }
+  .previews {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    .single-preview {
+      width: 25%;
+      padding: 5px;
+    }
+  }
   }
   }
 </style>
@@ -66,8 +87,11 @@
             </table>
           </div>
         </div>
-        <div class="right">
-          <input class="dropzone" type="file" multiple="multiple" @change="drop">
+        <div class="right" :class="{'dragging': dragging}" @change="drop" @dragenter="dragging=true" @dragleave="dragging=false">
+          <input class="dropzone" type="file" multiple="multiple">
+          <div class="previews">
+            <img class="single-preview" v-for="preview in previews" :src="preview.src" @click="removeImage(preview.key)" alt="">
+          </div>
         </div>
       </div>
     </main>
@@ -103,6 +127,8 @@
           show: false,
           msg: '',
         },
+        previews: [],
+        dragging: false,
       };
     },
     methods: {
@@ -131,9 +157,8 @@
         const newCase = this.newCase;
         const formData = new FormData();
         if (newCase.files.length !== 0) {
-          console.log(newCase.files.length);
           newCase.files.forEach((file) => {
-            formData.append(`uploads[${file.name}]`, file);
+            formData.append('uploads[]', file);
           });
         }
         delete newCase.files;
@@ -157,7 +182,7 @@
                 desc: '',
                 year: '',
                 link: '',
-                files: '',
+                files: [],
               };
             }
           });
@@ -168,9 +193,33 @@
           };
         }
       },
+      createPreview(image, key) {
+        const reader = new FileReader();
+        this.previews = [];
+        const vm = this;
+        reader.onload = (e) => {
+          vm.previews.push({ src: e.target.result, key });
+        };
+        reader.readAsDataURL(image);
+      },
+      removeImage(key) {
+        this.newCase.files.splice(key, 1);
+      },
       drop(e) {
+        this.dragging = false;
         const files = e.target.files;
         Array.from(files).forEach(file => this.newCase.files.push(file));
+      },
+    },
+    watch: {
+      'newCase.files': function (images) {
+        if (images.length === 0) {
+          this.previews = [];
+          return;
+        }
+        images.forEach((image, key) => {
+          this.createPreview(image, key);
+        });
       },
     },
   };

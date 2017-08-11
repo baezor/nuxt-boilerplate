@@ -145,7 +145,7 @@ app.use(_bodyParser2.default.urlencoded({ // to support URL-encoded bodies
 app.use('/api', _routes2.default);
 
 // Import and Set Nuxt.js options
-var config = __webpack_require__(12);
+var config = __webpack_require__(14);
 config.dev = !("development" === 'production');
 
 // Init Nuxt.js
@@ -193,7 +193,7 @@ var _case = __webpack_require__(8);
 
 var _case2 = _interopRequireDefault(_case);
 
-var _openSource = __webpack_require__(10);
+var _openSource = __webpack_require__(12);
 
 var _openSource2 = _interopRequireDefault(_openSource);
 
@@ -226,11 +226,11 @@ var _case = __webpack_require__(9);
 
 var _case2 = _interopRequireDefault(_case);
 
-var _formidable = __webpack_require__(13);
+var _formidable = __webpack_require__(10);
 
 var _formidable2 = _interopRequireDefault(_formidable);
 
-var _fs = __webpack_require__(14);
+var _fs = __webpack_require__(11);
 
 var _fs2 = _interopRequireDefault(_fs);
 
@@ -259,39 +259,26 @@ router.post('/case', function (req, res) {
   var form = new _formidable2.default.IncomingForm();
   var uploadDir = 'static/storage';
   form.multiples = true;
-  var files = [];
   form.keepExtensions = true;
-  form.on('field', function (name, value) {
-    if (name === 'title') {
-      if (!_fs2.default.existsSync(uploadDir + '/' + value)) {
-        _fs2.default.mkdirSync(uploadDir + '/' + value);
-      }
-      form.uploadDir = uploadDir + '/' + value;
-    }
-  });
-  form.on('file', function (field, file) {
-    // console.log(field, file, file.name);
-    files.push([field, file]);
-    _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
-  });
-  console.log(files);
+  form.onPart = function (part) {
+    form.handlePart(part);
+  };
   form.parse(req, function (err, fields, files) {
-    console.log(files);
-    // const new_case = new Cases(fields);
-    /* new_case.save(function(err, caseData) {
-      if (err)
-        res.send(err);
+    if (!_fs2.default.existsSync(uploadDir + '/' + fields.title)) {
+      _fs2.default.mkdirSync(uploadDir + '/' + fields.title);
+    }
+    form.uploadDir = uploadDir + '/' + fields.title;
+    var images = [];
+    files['uploads[]'].forEach(function (file) {
+      _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
+      images.push('storage/' + fields.title + '/' + file.name);
+    });
+    fields.images = images;
+    var new_case = new _case2.default(fields);
+    new_case.save(function (err, caseData) {
+      if (err) res.send(err);
       res.json(caseData);
-    }); */
-  });
-});
-
-/* POST update week */
-router.post('/week/update', function (req, res) {
-  var data = req.body;
-  Week.findOneAndUpdate({ number: data.number, year: data.year }, req.body, { new: true }, function (err, week) {
-    if (err) res.send(err);
-    res.json(week);
+    });
   });
 });
 
@@ -327,6 +314,9 @@ var CaseSchema = new Schema({
   },
   link: {
     type: String
+  },
+  images: {
+    type: Array
   }
 });
 
@@ -334,6 +324,18 @@ module.exports = mongoose.model('Case', CaseSchema);
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("formidable");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -345,7 +347,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _express = __webpack_require__(0);
 
-var _openSource = __webpack_require__(11);
+var _openSource = __webpack_require__(13);
 
 var _openSource2 = _interopRequireDefault(_openSource);
 
@@ -381,7 +383,7 @@ router.post('/open-source', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -416,7 +418,7 @@ var OpenSourceSchema = new Schema({
 module.exports = mongoose.model('OpenSource', OpenSourceSchema);
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -454,18 +456,6 @@ module.exports = {
     }
   }
 };
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("formidable");
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
 
 /***/ })
 /******/ ]);

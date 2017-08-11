@@ -28,40 +28,27 @@ router.post('/case', function (req, res) {
   const form = new formidable.IncomingForm();
   const uploadDir = 'static/storage';
   form.multiples = true;
-  const files = [];
   form.keepExtensions = true;
-  form.on('field', function(name, value) {
-    if (name === 'title') {
-      if (!fs.existsSync(`${uploadDir}/${value}`)) {
-        fs.mkdirSync(`${uploadDir}/${value}`);
-      }
-      form.uploadDir = `${uploadDir}/${value}`;
-    }
-  });
-  form.on('file', function (field, file) {
-    // console.log(field, file, file.name);
-    files.push([field, file]);
-    fs.rename(file.path, form.uploadDir + "/" + file.name);
-  });
-  console.log(files);
+  form.onPart = function(part) {
+    form.handlePart(part);
+  };
   form.parse(req, function(err, fields, files) {
-    console.log(files);
-    // const new_case = new Cases(fields);
-    /* new_case.save(function(err, caseData) {
+    if (!fs.existsSync(`${uploadDir}/${fields.title}`)) {
+      fs.mkdirSync(`${uploadDir}/${fields.title}`);
+    }
+    form.uploadDir = `${uploadDir}/${fields.title}`;
+    const images = [];
+    files['uploads[]'].forEach(function(file) {
+      fs.rename(file.path, form.uploadDir + "/" + file.name);
+      images.push(`storage/${fields.title}/${file.name}`);
+    });
+    fields.images = images;
+    const new_case = new Cases(fields);
+    new_case.save(function(err, caseData) {
       if (err)
         res.send(err);
       res.json(caseData);
-    }); */
-  });
-});
-
-/* POST update week */
-router.post('/week/update', function (req, res) {
-  const data = req.body;
-  Week.findOneAndUpdate({ number: data.number, year: data.year }, req.body, { new: true }, function (err, week) {
-    if (err)
-      res.send(err);
-    res.json(week);
+    });
   });
 });
 
