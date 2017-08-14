@@ -269,11 +269,13 @@ router.post('/case', function (req, res) {
     }
     form.uploadDir = uploadDir + '/' + fields.title;
     var images = [];
-    files['uploads[]'].forEach(function (file) {
-      _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
-      images.push('storage/' + fields.title + '/' + file.name);
-    });
-    fields.images = images;
+    if (files['uploads[]']) {
+      files['uploads[]'].forEach(function (file) {
+        _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
+        images.push('storage/' + fields.title + '/' + file.name);
+      });
+      fields.images = images;
+    }
     var new_case = new _case2.default(fields);
     new_case.save(function (err, caseData) {
       if (err) res.send(err);

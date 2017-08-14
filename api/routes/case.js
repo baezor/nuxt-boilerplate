@@ -38,11 +38,13 @@ router.post('/case', function (req, res) {
     }
     form.uploadDir = `${uploadDir}/${fields.title}`;
     const images = [];
-    files['uploads[]'].forEach(function(file) {
-      fs.rename(file.path, form.uploadDir + "/" + file.name);
-      images.push(`storage/${fields.title}/${file.name}`);
-    });
+    if (files['uploads[]']) {
+      files['uploads[]'].forEach(function(file) {
+        fs.rename(file.path, form.uploadDir + "/" + file.name);
+        images.push(`storage/${fields.title}/${file.name}`);
+      });
     fields.images = images;
+    }
     const new_case = new Cases(fields);
     new_case.save(function(err, caseData) {
       if (err)
