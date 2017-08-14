@@ -1,4 +1,5 @@
 FROM node:7.10.0
+ENV HOST 0.0.0.0
 
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
