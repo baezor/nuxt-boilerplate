@@ -42,11 +42,11 @@ router.post('/case', function (req, res) {
       if (typeof files['uploads[]'][0] !== 'undefined') {
         files['uploads[]'].forEach(function(file) {
           fs.rename(file.path, form.uploadDir + "/" + file.name);
-          images.push(`storage/${fields.title}/${file.name}`);
+          images.push(`/storage/${fields.title}/${file.name}`);
         });
       } else {
         fs.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
-        images.push(`storage/${fields.title}/${files['uploads[]'].name}`);
+        images.push(`/storage/${fields.title}/${files['uploads[]'].name}`);
       }
     fields.images = images;
     }

@@ -8,7 +8,7 @@
       <p class="small-text" v-if="actualCase.link"><a :href="actualCase.link" target="_blank">Link</a></p>
       <p class="small-text">{{ actualCase.year }}</p>
       <p class="small-text">{{ actualCase.desc }}</p>
-      <div class="images">
+      <div class="images" v-if="actualCase.images">
         <img v-for="image in actualCase.images" :src="image" alt="">
       </div>
     </main>
