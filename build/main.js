@@ -273,11 +273,11 @@ router.post('/case', function (req, res) {
       if (typeof files['uploads[]'][0] !== 'undefined') {
         files['uploads[]'].forEach(function (file) {
           _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
-          images.push('storage/' + fields.title + '/' + file.name);
+          images.push('/storage/' + fields.title + '/' + file.name);
         });
       } else {
         _fs2.default.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
-        images.push('storage/' + fields.title + '/' + files['uploads[]'].name);
+        images.push('/storage/' + fields.title + '/' + files['uploads[]'].name);
       }
       fields.images = images;
     }
@@ -358,6 +358,14 @@ var _openSource = __webpack_require__(13);
 
 var _openSource2 = _interopRequireDefault(_openSource);
 
+var _formidable = __webpack_require__(10);
+
+var _formidable2 = _interopRequireDefault(_formidable);
+
+var _fs = __webpack_require__(11);
+
+var _fs2 = _interopRequireDefault(_fs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express.Router)();
@@ -380,6 +388,32 @@ router.get('/open-source/:slug', function (req, res) {
 
 /* POST create new open source project */
 router.post('/open-source', function (req, res) {
+  var form = new _formidable2.default.IncomingForm();
+  var uploadDir = 'static/storage';
+  form.multiples = true;
+  form.keepExtensions = true;
+  form.onPart = function (part) {
+    form.handlePart(part);
+  };
+  form.parse(req, function (err, fields, files) {
+    if (!_fs2.default.existsSync(uploadDir + '/' + fields.title)) {
+      _fs2.default.mkdirSync(uploadDir + '/' + fields.title);
+    }
+    form.uploadDir = uploadDir + '/' + fields.title;
+    var images = [];
+    if (typeof files['uploads[]'] !== 'undefined') {
+      if (typeof files['uploads[]'][0] !== 'undefined') {
+        files['uploads[]'].forEach(function (file) {
+          _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
+          images.push('/storage/' + fields.title + '/' + file.name);
+        });
+      } else {
+        _fs2.default.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
+        images.push('/storage/' + fields.title + '/' + files['uploads[]'].name);
+      }
+      fields.images = images;
+    }
+  });
   var new_case = new _openSource2.default(req.body);
   new_case.save(function (err, openSource) {
     if (err) res.send(err);

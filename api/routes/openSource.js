@@ -1,5 +1,7 @@
 import { Router } from 'express'
 import OpenSource from '../models/openSource'
+import formidable from 'formidable'
+import fs from 'fs'
 
 const router = Router()
 
@@ -35,10 +37,10 @@ router.post('/open-source', function (req, res) {
       fs.mkdirSync(`${uploadDir}/${fields.title}`);
     }
     form.uploadDir = `${uploadDir}/${fields.title}`;
-    const images = [];
+    const images   = [];
     if (typeof files['uploads[]'] !== 'undefined') {
       if (typeof files['uploads[]'][0] !== 'undefined') {
-        files['uploads[]'].forEach(function(file) {
+        files['uploads[]'].forEach(function (file) {
           fs.rename(file.path, form.uploadDir + "/" + file.name);
           images.push(`/storage/${fields.title}/${file.name}`);
         });
@@ -48,6 +50,7 @@ router.post('/open-source', function (req, res) {
       }
       fields.images = images;
     }
+  });
   const new_case = new OpenSource(req.body);
   new_case.save(function(err, openSource) {
     if (err)
