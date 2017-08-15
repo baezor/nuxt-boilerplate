@@ -1,7 +1,15 @@
 <style lang="scss">
+  .single-case {
+    .images {
+      .single-image {
+        width: 25%;
+        padding: 0 15px;
+      }
+    }
+  }
 </style>
 <template>
-  <div class="wrapper">
+  <div class="wrapper single-case">
     <Heading/>
     <main class="main" v-if="actualCase">
       <h1>{{ actualCase.title }}</h1>
@@ -9,7 +17,7 @@
       <p class="small-text">{{ actualCase.year }}</p>
       <p class="small-text">{{ actualCase.desc }}</p>
       <div class="images" v-if="actualCase.images">
-        <img v-for="image in actualCase.images" :src="image" alt="">
+        <img class="single-image" v-for="image in actualCase.images" :src="image" alt="">
       </div>
     </main>
     <Social/>
