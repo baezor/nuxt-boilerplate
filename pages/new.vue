@@ -115,11 +115,11 @@
       return {
         newCase: {
           type: 'case',
-          title: 'aa',
+          title: '',
           slug: '',
           category: '',
-          desc: 'aa',
-          year: '20',
+          desc: '',
+          year: '',
           link: '',
           files: [],
         },

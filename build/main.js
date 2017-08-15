@@ -269,11 +269,16 @@ router.post('/case', function (req, res) {
     }
     form.uploadDir = uploadDir + '/' + fields.title;
     var images = [];
-    if (files['uploads[]']) {
-      files['uploads[]'].forEach(function (file) {
-        _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
-        images.push('storage/' + fields.title + '/' + file.name);
-      });
+    if (typeof files['uploads[]'] !== 'undefined') {
+      if (typeof files['uploads[]'][0] !== 'undefined') {
+        files['uploads[]'].forEach(function (file) {
+          _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
+          images.push('storage/' + fields.title + '/' + file.name);
+        });
+      } else {
+        _fs2.default.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
+        images.push('storage/' + fields.title + '/' + files['uploads[]'].name);
+      }
       fields.images = images;
     }
     var new_case = new _case2.default(fields);
