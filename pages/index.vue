@@ -30,7 +30,7 @@
             made by bitter/end</p>
         </router-link>
       </div>
-      <div>
+      <div class="menu-item">
         <router-link :to="{path: '/contact'}">
           <h2>04<br>CONTACT</h2>
           <p class="text-small">Showcase of latest work
