@@ -62,7 +62,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,26 +79,38 @@ module.exports = require("mongoose");
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("formidable");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 // require babel-register and set Babel presets options to es2015
-__webpack_require__(3)({
+__webpack_require__(5)({
   presets: ['es2015']
 });
 
-__webpack_require__(4);
+__webpack_require__(6);
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-register");
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108,17 +120,17 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _nuxt = __webpack_require__(5);
+var _nuxt = __webpack_require__(7);
 
 var _mongoose = __webpack_require__(1);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _bodyParser = __webpack_require__(6);
+var _bodyParser = __webpack_require__(8);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _routes = __webpack_require__(7);
+var _routes = __webpack_require__(9);
 
 var _routes2 = _interopRequireDefault(_routes);
 
@@ -165,19 +177,19 @@ app.listen(port, host);
 console.log('Server listening on ' + host + ':' + port); // eslint-disable-line no-console
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("nuxt");
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,7 +201,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _express = __webpack_require__(0);
 
-var _case = __webpack_require__(8);
+var _case = __webpack_require__(10);
 
 var _case2 = _interopRequireDefault(_case);
 
@@ -210,7 +222,7 @@ router.use(_openSource2.default);
 exports.default = router;
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -222,15 +234,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _express = __webpack_require__(0);
 
-var _case = __webpack_require__(9);
+var _case = __webpack_require__(11);
 
 var _case2 = _interopRequireDefault(_case);
 
-var _formidable = __webpack_require__(10);
+var _formidable = __webpack_require__(2);
 
 var _formidable2 = _interopRequireDefault(_formidable);
 
-var _fs = __webpack_require__(11);
+var _fs = __webpack_require__(3);
 
 var _fs2 = _interopRequireDefault(_fs);
 
@@ -292,7 +304,7 @@ router.post('/case', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -330,18 +342,6 @@ var CaseSchema = new Schema({
 module.exports = mongoose.model('Case', CaseSchema);
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("formidable");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -358,11 +358,11 @@ var _openSource = __webpack_require__(13);
 
 var _openSource2 = _interopRequireDefault(_openSource);
 
-var _formidable = __webpack_require__(10);
+var _formidable = __webpack_require__(2);
 
 var _formidable2 = _interopRequireDefault(_formidable);
 
-var _fs = __webpack_require__(11);
+var _fs = __webpack_require__(3);
 
 var _fs2 = _interopRequireDefault(_fs);
 

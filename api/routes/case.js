@@ -33,20 +33,20 @@ router.post('/case', function (req, res) {
     form.handlePart(part);
   };
   form.parse(req, function(err, fields, files) {
-    if (!fs.existsSync(`${uploadDir}/${fields.title}`)) {
-      fs.mkdirSync(`${uploadDir}/${fields.title}`);
+    if (!fs.existsSync(`${uploadDir}/${fields.slug}`)) {
+      fs.mkdirSync(`${uploadDir}/${fields.slug}`);
     }
-    form.uploadDir = `${uploadDir}/${fields.title}`;
+    form.uploadDir = `${uploadDir}/${fields.slug}`;
     const images = [];
     if (typeof files['uploads[]'] !== 'undefined') {
       if (typeof files['uploads[]'][0] !== 'undefined') {
         files['uploads[]'].forEach(function(file) {
           fs.rename(file.path, form.uploadDir + "/" + file.name);
-          images.push(`/storage/${fields.title}/${file.name}`);
+          images.push(`/storage/${fields.slug}/${file.name}`);
         });
       } else {
         fs.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
-        images.push(`/storage/${fields.title}/${files['uploads[]'].name}`);
+        images.push(`/storage/${fields.slug}/${files['uploads[]'].name}`);
       }
     fields.images = images;
     }
