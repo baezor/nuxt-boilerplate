@@ -1,4 +1,4 @@
-# Nuxt.js + MongoDB boilerplate
+![NuxtBoilerplate](static/logo.png)
 
 > Bitterend's Nuxt.js boilerplate with MongoDB
 
