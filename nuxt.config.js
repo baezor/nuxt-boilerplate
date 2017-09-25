@@ -38,5 +38,11 @@ module.exports = {
   /*
   ** Plugins
   */
-  plugins: ['~/plugins/global.js']
+  plugins: ['~/plugins/global.js'],
+  /*
+  ** Environment variables
+  */
+  env: {
+    apiRoot: '/api',
+  },
 }

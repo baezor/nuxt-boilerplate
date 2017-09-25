@@ -22,9 +22,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-// Import API Router
-app.use('/api', api);
-
 // Import and Set Nuxt.js options
 let config = require('./nuxt.config.js');
 config.dev = !(process.env.NODE_ENV === 'production');
@@ -37,6 +34,9 @@ if (config.dev) {
   const builder = new Builder(nuxt);
   builder.build();
 }
+
+// Import API Router
+app.use(config.env.apiRoot, api);
 
 // Give nuxt middleware to express
 app.use(nuxt.render);

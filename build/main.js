@@ -141,9 +141,6 @@ app.use(_bodyParser2.default.urlencoded({ // to support URL-encoded bodies
   extended: true
 }));
 
-// Import API Router
-app.use('/api', _routes2.default);
-
 // Import and Set Nuxt.js options
 var config = __webpack_require__(10);
 config.dev = !("development" === 'production');
@@ -156,6 +153,9 @@ if (config.dev) {
   var builder = new _nuxt.Builder(nuxt);
   builder.build();
 }
+
+// Import API Router
+app.use(config.env.apiRoot, _routes2.default);
 
 // Give nuxt middleware to express
 app.use(nuxt.render);
@@ -223,25 +223,32 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = (0, _express.Router)();
 
-/* GET all items */
-router.get('/items', function (req, res) {
+router.route('/item')
+// GET items
+.get(function (req, res) {
   _Item2.default.find({}, function (err, item) {
     if (err) res.status(500).send(err);
     res.json(item);
   });
-});
-
-/* POST create new item */
-router.post('/item', function (req, res) {
+})
+// POST create new item
+.post(function (req, res) {
   var newItem = new _Item2.default(req.body);
   newItem.save(function (err, data) {
     if (err) res.status(500).send(err);
     res.json(data);
   });
-});
-
-/* DELETE item by ID */
-router.delete('/item', function (req, res) {
+})
+// PUT update existing item
+.put(function (req, res) {
+  var _id = req.body._id;
+  _Item2.default.findByIdAndUpdate(_id, { $set: req.body }, { new: true }, function (err, data) {
+    if (err) res.status(500).send(err);
+    res.json(data);
+  });
+})
+// DELETE delete existing item
+.delete(function (req, res) {
   var _id = req.query.id;
   _Item2.default.remove({ _id: _id }, function (err, data) {
     if (err) res.status(404).send(err);
@@ -311,7 +318,13 @@ module.exports = {
   /*
   ** Plugins
   */
-  plugins: ['~/plugins/global.js']
+  plugins: ['~/plugins/global.js'],
+  /*
+  ** Environment variables
+  */
+  env: {
+    apiRoot: '/api'
+  }
 };
 
 /***/ })

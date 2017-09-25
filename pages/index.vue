@@ -94,6 +94,9 @@
           </div>
           <div class="title">
             {{ item.title }}
+            <button @click="updateItem(item)" type="button">
+              UPRAVIT
+            </button>
           </div>
         </li>
       </transition-group>
@@ -119,6 +122,11 @@ export default {
   methods: {
     removeItem(id) {
       this.$store.dispatch('example/deleteItem', id);
+    },
+    updateItem(item) {
+      const updated = JSON.parse(JSON.stringify(item));
+      updated.title = 'upraveno';
+      this.$store.dispatch('example/updateItem', updated);
     },
   },
   created() {

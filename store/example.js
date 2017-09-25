@@ -1,4 +1,4 @@
-/* eslint no-shadow: ["error", { "allow": ["state", "products"] }] */
+/* eslint no-shadow: ["error", { "allow": ["state"] }] */
 /* eslint no-param-reassign: ["off"] */
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
@@ -17,12 +17,12 @@ export const getters = {
 // actions
 export const actions = {
   /*
-  ** Get all items from MongoDB with GET request to endpoint /api/items
-  ** then commit mutation ADD_ITEMS
+  ** Get all items from MongoDB with GET request to endpoint /api/item
+  ** then commit mutation GET_ITEMS
   */
   getItemsFromApi({ commit }) {
-    axios.get('/api/items').then((response) => {
-      commit('ADD_ITEMS', response.data);
+    axios.get(`${process.env.apiRoot}/item`).then((response) => {
+      commit('GET_ITEMS', response.data);
     });
   },
   /*
@@ -31,8 +31,21 @@ export const actions = {
   ** @param {object} item
   */
   addItem({ commit }, item) {
-    axios.post('/api/item', item).then((response) => {
+    axios.post(`${process.env.apiRoot}/item`, item).then((response) => {
       commit('ADD_ITEM', response.data);
+    });
+  },
+  /*
+  ** Update item in MogoDB with PUT request to ednpoint /api/item
+  ** then commit mutation UPDATE_ITEM
+  ** @param {object} item
+  */
+  updateItem({ commit }, item) {
+    axios.put(`${process.env.apiRoot}/item`, item).then((response) => {
+      console.log(response.data);
+      commit('UPDATE_ITEM', response.data);
+    }).catch((error) => {
+      console.log(error.response);
     });
   },
   /*
@@ -41,7 +54,7 @@ export const actions = {
   ** @param {string} id of item
   */
   deleteItem({ commit }, id) {
-    axios.delete('/api/item', { params: { id } }).then(() => {
+    axios.delete(`${process.env.apiRoot}/item`, { params: { id } }).then(() => {
       commit('REMOVE_ITEM', id);
     }).catch((error) => {
       console.log(error.response);
@@ -54,8 +67,15 @@ export const mutations = {
   /*
   ** Store all items into the state
   */
-  ADD_ITEMS(state, items) {
+  GET_ITEMS(state, items) {
     state.items = items;
+  },
+  /*
+  ** Update item and update it in state collection
+  */
+  UPDATE_ITEM(state, input) {
+    const index = state.items.findIndex(item => item._id === input._id);
+    state.items.splice(index, 1, input);
   },
   /*
   ** Store new item into the state
@@ -64,7 +84,7 @@ export const mutations = {
     state.items.push(item);
   },
   /*
-  ** Remove item by id frome state
+  ** Remove item by id from state
   */
   REMOVE_ITEM(state, id) {
     const index = state.items.findIndex(item => item._id === id);

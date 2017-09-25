@@ -3,6 +3,6 @@
 */
 
 import Vue from 'vue';
-import CustomInput from '../components/custom-input.vue';
+import CustomInput from '../components/forms/custom-input.vue';
 
 Vue.component('custom-input', CustomInput);
