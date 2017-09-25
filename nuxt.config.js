@@ -3,7 +3,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Bitter End',
+    title: 'Nuxt + MongoDB boilerplate',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -34,5 +34,9 @@ module.exports = {
         })
       }
     }
-  }
+  },
+  /*
+  ** Plugins
+  */
+  plugins: ['~/plugins/global.js']
 }

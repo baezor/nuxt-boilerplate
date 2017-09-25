@@ -24,14 +24,11 @@
     "precommit": "npm run lint",
     "unit": "karma start test/unit/karma.conf.js",
     "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test": "npm run unit"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
     "babel-register": "^6.24.1",
     "backpack-core": "^0.4.1",
     "chai": "^3.5.0",
@@ -63,7 +60,6 @@
     "sass-loader": "^6.0.6",
     "selenium-server": "^3.0.1",
     "sinon": "^2.1.0",
-    "sinon-chai": "^2.8.0",
-    "@storybook/vue": "^3.2.3"
+    "sinon-chai": "^2.8.0"
   }
 }

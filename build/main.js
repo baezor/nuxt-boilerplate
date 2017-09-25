@@ -62,7 +62,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,38 +79,26 @@ module.exports = require("mongoose");
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("formidable");
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 // require babel-register and set Babel presets options to es2015
-__webpack_require__(5)({
+__webpack_require__(3)({
   presets: ['es2015']
 });
 
-__webpack_require__(6);
+__webpack_require__(4);
 
 /***/ }),
-/* 5 */
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-register");
 
 /***/ }),
-/* 6 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120,17 +108,17 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _nuxt = __webpack_require__(7);
+var _nuxt = __webpack_require__(5);
 
 var _mongoose = __webpack_require__(1);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _bodyParser = __webpack_require__(8);
+var _bodyParser = __webpack_require__(6);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _routes = __webpack_require__(9);
+var _routes = __webpack_require__(7);
 
 var _routes2 = _interopRequireDefault(_routes);
 
@@ -143,7 +131,7 @@ var port = process.env.PORT || 3000;
 app.set('port', port);
 
 // MongoDb
-var mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/portfolio';
+var mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/nuxtboilerplate';
 _mongoose2.default.Promise = global.Promise;
 _mongoose2.default.connect(mongodbhost);
 
@@ -157,7 +145,7 @@ app.use(_bodyParser2.default.urlencoded({ // to support URL-encoded bodies
 app.use('/api', _routes2.default);
 
 // Import and Set Nuxt.js options
-var config = __webpack_require__(14);
+var config = __webpack_require__(10);
 config.dev = !("development" === 'production');
 
 // Init Nuxt.js
@@ -177,16 +165,91 @@ app.listen(port, host);
 console.log('Server listening on ' + host + ':' + port); // eslint-disable-line no-console
 
 /***/ }),
-/* 7 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = require("nuxt");
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _item = __webpack_require__(8);
+
+var _item2 = _interopRequireDefault(_item);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = (0, _express.Router)();
+
+// Add Items Routes
+router.use(_item2.default);
+
+exports.default = router;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _Item = __webpack_require__(9);
+
+var _Item2 = _interopRequireDefault(_Item);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = (0, _express.Router)();
+
+/* GET all items */
+router.get('/items', function (req, res) {
+  _Item2.default.find({}, function (err, item) {
+    if (err) res.status(500).send(err);
+    res.json(item);
+  });
+});
+
+/* POST create new item */
+router.post('/item', function (req, res) {
+  var newItem = new _Item2.default(req.body);
+  newItem.save(function (err, data) {
+    if (err) res.status(500).send(err);
+    res.json(data);
+  });
+});
+
+/* DELETE item by ID */
+router.delete('/item', function (req, res) {
+  var _id = req.query.id;
+  _Item2.default.remove({ _id: _id }, function (err, data) {
+    if (err) res.status(404).send(err);
+    res.json(data);
+  });
+});
+
+exports.default = router;
 
 /***/ }),
 /* 9 */
@@ -195,271 +258,20 @@ module.exports = require("body-parser");
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+var mongoose = __webpack_require__(1);
+var Schema = mongoose.Schema;
+
+var ItemSchema = new Schema({
+  title: {
+    type: String,
+    Required: 'Kindly enter the title of item'
+  }
 });
 
-var _express = __webpack_require__(0);
-
-var _case = __webpack_require__(10);
-
-var _case2 = _interopRequireDefault(_case);
-
-var _openSource = __webpack_require__(12);
-
-var _openSource2 = _interopRequireDefault(_openSource);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var router = (0, _express.Router)();
-
-// Add Cases Routes
-router.use(_case2.default);
-
-// Add OpenSource Routes
-router.use(_openSource2.default);
-
-exports.default = router;
+module.exports = mongoose.model('Item', ItemSchema);
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _express = __webpack_require__(0);
-
-var _case = __webpack_require__(11);
-
-var _case2 = _interopRequireDefault(_case);
-
-var _formidable = __webpack_require__(2);
-
-var _formidable2 = _interopRequireDefault(_formidable);
-
-var _fs = __webpack_require__(3);
-
-var _fs2 = _interopRequireDefault(_fs);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var router = (0, _express.Router)();
-
-/* GET all cases */
-router.get('/cases', function (req, res) {
-  _case2.default.find({}, function (err, cases) {
-    if (err) res.send(err);
-    res.json(cases);
-  });
-});
-
-/* GET one case by slug */
-router.get('/cases/:slug', function (req, res) {
-  _case2.default.findOne({ slug: req.params.slug }, function (err, oneCase) {
-    if (err) res.send(err);
-    res.json(oneCase);
-  });
-});
-
-/* POST create new case */
-router.post('/case', function (req, res) {
-  var form = new _formidable2.default.IncomingForm();
-  var uploadDir = 'static/storage';
-  form.multiples = true;
-  form.keepExtensions = true;
-  form.onPart = function (part) {
-    form.handlePart(part);
-  };
-  form.parse(req, function (err, fields, files) {
-    if (!_fs2.default.existsSync(uploadDir + '/' + fields.title)) {
-      _fs2.default.mkdirSync(uploadDir + '/' + fields.title);
-    }
-    form.uploadDir = uploadDir + '/' + fields.title;
-    var images = [];
-    if (typeof files['uploads[]'] !== 'undefined') {
-      if (typeof files['uploads[]'][0] !== 'undefined') {
-        files['uploads[]'].forEach(function (file) {
-          _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
-          images.push('/storage/' + fields.title + '/' + file.name);
-        });
-      } else {
-        _fs2.default.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
-        images.push('/storage/' + fields.title + '/' + files['uploads[]'].name);
-      }
-      fields.images = images;
-    }
-    var new_case = new _case2.default(fields);
-    new_case.save(function (err, caseData) {
-      if (err) res.send(err);
-      res.json(caseData);
-    });
-  });
-});
-
-exports.default = router;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mongoose = __webpack_require__(1);
-var Schema = mongoose.Schema;
-
-var CaseSchema = new Schema({
-  title: {
-    type: String,
-    Required: 'Kindly enter the title of case'
-  },
-  slug: {
-    type: String,
-    Required: 'Slug is required'
-  },
-  category: {
-    type: String
-  },
-  desc: {
-    type: String
-  },
-  year: {
-    type: Number
-  },
-  link: {
-    type: String
-  },
-  images: {
-    type: Array
-  }
-});
-
-module.exports = mongoose.model('Case', CaseSchema);
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _express = __webpack_require__(0);
-
-var _openSource = __webpack_require__(13);
-
-var _openSource2 = _interopRequireDefault(_openSource);
-
-var _formidable = __webpack_require__(2);
-
-var _formidable2 = _interopRequireDefault(_formidable);
-
-var _fs = __webpack_require__(3);
-
-var _fs2 = _interopRequireDefault(_fs);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var router = (0, _express.Router)();
-
-/* GET all open source projects */
-router.get('/open-source', function (req, res) {
-  _openSource2.default.find({}, function (err, openSources) {
-    if (err) res.send(err);
-    res.json(openSources);
-  });
-});
-
-/* GET one open source project by slug */
-router.get('/open-source/:slug', function (req, res) {
-  _openSource2.default.findOne({ slug: req.params.slug }, function (err, openSource) {
-    if (err) res.send(err);
-    res.json(openSource);
-  });
-});
-
-/* POST create new open source project */
-router.post('/open-source', function (req, res) {
-  var form = new _formidable2.default.IncomingForm();
-  var uploadDir = 'static/storage';
-  form.multiples = true;
-  form.keepExtensions = true;
-  form.onPart = function (part) {
-    form.handlePart(part);
-  };
-  form.parse(req, function (err, fields, files) {
-    if (!_fs2.default.existsSync(uploadDir + '/' + fields.title)) {
-      _fs2.default.mkdirSync(uploadDir + '/' + fields.title);
-    }
-    form.uploadDir = uploadDir + '/' + fields.title;
-    var images = [];
-    if (typeof files['uploads[]'] !== 'undefined') {
-      if (typeof files['uploads[]'][0] !== 'undefined') {
-        files['uploads[]'].forEach(function (file) {
-          _fs2.default.rename(file.path, form.uploadDir + "/" + file.name);
-          images.push('/storage/' + fields.title + '/' + file.name);
-        });
-      } else {
-        _fs2.default.rename(files['uploads[]'].path, form.uploadDir + "/" + files['uploads[]'].name);
-        images.push('/storage/' + fields.title + '/' + files['uploads[]'].name);
-      }
-      fields.images = images;
-    }
-  });
-  var new_case = new _openSource2.default(req.body);
-  new_case.save(function (err, openSource) {
-    if (err) res.send(err);
-    res.json(openSource);
-  });
-});
-
-exports.default = router;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mongoose = __webpack_require__(1);
-var Schema = mongoose.Schema;
-
-var OpenSourceSchema = new Schema({
-  title: {
-    type: String,
-    Required: 'Kindly enter the title of case'
-  },
-  slug: {
-    type: String,
-    Required: 'Slug is required'
-  },
-  category: {
-    type: String
-  },
-  desc: {
-    type: String
-  },
-  year: {
-    type: Number
-  },
-  link: {
-    type: String
-  }
-});
-
-module.exports = mongoose.model('OpenSource', OpenSourceSchema);
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -470,7 +282,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Bitter End',
+    title: 'Nuxt + MongoDB boilerplate',
     meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: 'Nuxt.js project' }],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -495,7 +307,11 @@ module.exports = {
         });
       }
     }
-  }
+  },
+  /*
+  ** Plugins
+  */
+  plugins: ['~/plugins/global.js']
 };
 
 /***/ })

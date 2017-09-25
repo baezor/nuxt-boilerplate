@@ -1,6 +1,6 @@
-# nuxt
+# Nuxt.js + MongoDB boilerplate
 
-> Nuxt.js project
+> Bitterend's Nuxt.js boilerplate with MongoDB
 
 ## Build Setup
 
@@ -20,6 +20,18 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+
+## Database setup
+This boilerplate uses [Mongoose](http://mongoosejs.com/docs/guide.html).
+
+Database config is stored in ```/server.base.js```
+
+Example:
+```
+const mongodbhost = process.env.MONGO_URL || 'mongodb://localhost/nuxtboilerplate';
+mongoose.Promise = global.Promise;
+mongoose.connect(mongodbhost);
+```
 
 ## Dokku deployment
 
@@ -53,13 +65,6 @@ dokku mongo:create my-db-name
 dokku mongo:link my-db-name my-nuxt-app
 dokku mongo:promote my-db-name my-nuxt-app
 ```
-
-## TODO
-
-### Enable Global API url setting
-
-Variable that stores API url, which by default == ``/api/`` but could also be set to something like ``http://domain.tld/api/``
-
 
 
 
