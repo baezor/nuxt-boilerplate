@@ -23,6 +23,8 @@ export const actions = {
   getItemsFromApi({ commit }) {
     axios.get(`${process.env.apiRoot}/item`).then((response) => {
       commit('GET_ITEMS', response.data);
+    }).catch((error) => {
+      console.error(`${error.response.status} ${error.response.statusText}`);
     });
   },
   /*
@@ -33,6 +35,8 @@ export const actions = {
   addItem({ commit }, item) {
     axios.post(`${process.env.apiRoot}/item`, item).then((response) => {
       commit('ADD_ITEM', response.data);
+    }).catch((error) => {
+      console.error(`${error.response.status} ${error.response.statusText}`);
     });
   },
   /*
@@ -42,10 +46,9 @@ export const actions = {
   */
   updateItem({ commit }, item) {
     axios.put(`${process.env.apiRoot}/item`, item).then((response) => {
-      console.log(response.data);
       commit('UPDATE_ITEM', response.data);
     }).catch((error) => {
-      console.log(error.response);
+      console.error(`${error.response.status} ${error.response.statusText}`);
     });
   },
   /*
@@ -57,7 +60,7 @@ export const actions = {
     axios.delete(`${process.env.apiRoot}/item`, { params: { id } }).then(() => {
       commit('REMOVE_ITEM', id);
     }).catch((error) => {
-      console.log(error.response);
+      console.error(`${error.response.status} ${error.response.statusText}`);
     });
   },
 };

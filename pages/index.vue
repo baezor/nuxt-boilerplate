@@ -77,32 +77,34 @@
 </style>
 <template>
   <div class="wrapper">
-    <div class="row">
-      <img src="/logo.png" alt="Logo">
-    </div>
-    <div class="row">
-      <h3>NUXT.js + MongoDB boilerplate</h3>
-    </div>
-    <custom-input></custom-input>
-    <ul>
-      <transition-group name="fade">
-        <li v-for="item in items" :key="item._id" :class="{selected: selected === item._id}" @click="selected = item._id">
-          <div class="delete">
-            <transition name="from-left">
-              <span v-show="selected === item._id" class="delete-icon" @click="removeItem(item._id)">-</span>
-            </transition>
-          </div>
-          <div class="title">
-            {{ item.title }}
-            <button @click="updateItem(item)" type="button">
-              UPRAVIT
-            </button>
-          </div>
-        </li>
-      </transition-group>
-    </ul>
-    <div class="footer">
-      Made with <span class="heart">❤</span> by <a href="http://bitterend.io">Bitterend</a>
+    <div class="flex">
+      <div class="sidebar">
+        <img src="/logo.png" alt="Logo">
+        <h3>NUXT.js + MongoDB boilerplate</h3>
+      </div>
+      <div>
+        <custom-input></custom-input>
+        <ul>
+          <transition-group name="fade">
+            <li v-for="item in items" :key="item._id" :class="{selected: selected === item._id}" @click="selected = item._id">
+              <div class="delete">
+                <transition name="from-left">
+                  <span v-show="selected === item._id" class="delete-icon" @click="removeItem(item._id)">-</span>
+                </transition>
+              </div>
+              <div class="title">
+                {{ item.title }}
+                <button @click="updateItem(item)" type="button">
+                  UPRAVIT
+                </button>
+              </div>
+            </li>
+          </transition-group>
+        </ul>
+        <p>
+          Made with <span class="heart">❤</span> by <a href="http://bitterend.io">Bitterend</a>
+        </p>
+      </div>
     </div>
   </div>
 </template>

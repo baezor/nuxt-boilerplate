@@ -37,3 +37,14 @@
 .pull-right {
   float: right;
 }
+
+.align-center { align-items: center; }
+.align-self-center { align-self: center; }
+
+
+.flex, .cols { 
+  display: flex; 
+  & > * {
+    flex: 1;
+  }
+}

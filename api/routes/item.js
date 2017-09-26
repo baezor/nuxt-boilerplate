@@ -14,8 +14,7 @@ router.route('/item')
   })
   // POST create new item
   .post((req, res) => {
-    const newItem = new Item(req.body);
-    newItem.save((err, data) => {
+    new Item(req.body).save((err, data) => {
       if (err)
         res.status(500).send(err);
       res.json(data);
@@ -23,8 +22,7 @@ router.route('/item')
   })
   // PUT update existing item
   .put((req, res) => {
-    const _id = req.body._id;
-    Item.findByIdAndUpdate(_id, { $set: req.body }, { new: true }, (err, data) => {
+    Item.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true }, (err, data) => {
       if (err)
         res.status(500).send(err);
       res.json(data);

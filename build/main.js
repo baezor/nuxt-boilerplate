@@ -233,16 +233,14 @@ router.route('/item')
 })
 // POST create new item
 .post(function (req, res) {
-  var newItem = new _Item2.default(req.body);
-  newItem.save(function (err, data) {
+  new _Item2.default(req.body).save(function (err, data) {
     if (err) res.status(500).send(err);
     res.json(data);
   });
 })
 // PUT update existing item
 .put(function (req, res) {
-  var _id = req.body._id;
-  _Item2.default.findByIdAndUpdate(_id, { $set: req.body }, { new: true }, function (err, data) {
+  _Item2.default.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true }, function (err, data) {
     if (err) res.status(500).send(err);
     res.json(data);
   });
