@@ -4,8 +4,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .row {
-      display: flex;
+    .flex {
+      width: 100%;
+      height: 100%;
+      .sidebar {
+        flex: 0 0 200px;
+      }
+      .main {
+        flex: 1 1;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
     }
     ul {
       list-style: none;
@@ -15,28 +25,42 @@
         padding-bottom: 5px;
         cursor: pointer;
         display: flex;
-        margin-left: -20px;
+        margin-left: -40px;
+        font-size: 1.1em;
         &.selected {
           font-weight: bold;
          }
-         .delete {
-           width: 20px;
+         .icons {
+           width: 40px;
            overflow: hidden;
-          .delete-icon {
-            background: transparent;
-            border: 1px solid #f00;
-            border-radius: 2em;
-            color: #f00;
-            display: inline-block;
-            font-size: 12px;
-            padding: 0 5px;
-          }
          }
+        .icon {
+          display: inline-block;
+          font-size: 1.1em;
+          &.delete-icon {
+             color: #f00;
+           }
+          &.save-icon {
+            color: #4BB543;
+          }
+        }
+        input {
+          font-size: 1.1em;
+          line-height: 1.1em;
+          border: none;
+          border-bottom: 1px solid;
+          outline: none;
+          width: 100px;
+        }
       }
     }
+
     .footer {
       position: fixed;
       bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
       .heart {
         display: inline-block;
         color: #a83f39;
@@ -79,32 +103,38 @@
   <div class="wrapper">
     <div class="flex">
       <div class="sidebar">
-        <img src="/logo.png" alt="Logo">
-        <h3>NUXT.js + MongoDB boilerplate</h3>
+        <img src="/logo.png" alt="Logo" width="80%">
       </div>
-      <div>
+      <div class="main">
+        <h1>NUXT.js + MongoDB boilerplate</h1>
         <custom-input></custom-input>
         <ul>
           <transition-group name="fade">
             <li v-for="item in items" :key="item._id" :class="{selected: selected === item._id}" @click="selected = item._id">
-              <div class="delete">
-                <transition name="from-left">
-                  <span v-show="selected === item._id" class="delete-icon" @click="removeItem(item._id)">-</span>
-                </transition>
+              <div class="icons">
+                <transition-group name="from-left">
+                  <i key="edit" v-show="selected === item._id" class="material-icons icon edit-icon" @click="edit = { id: item._id, value: item.title }">create</i>
+                  <i key="delete" v-show="selected === item._id" class="material-icons icon delete-icon" @click="removeItem(item._id)">highlight_off</i>
+                </transition-group>
               </div>
               <div class="title">
-                {{ item.title }}
-                <button @click="updateItem(item)" type="button">
-                  UPRAVIT
-                </button>
+                <span v-if="edit.id !== item._id">
+                  {{ item.title }}
+                </span>
+                <input v-else type="text" v-model="edit.value">
+                <transition name="fade">
+                  <i v-if="edit.id === item._id" class="material-icons icon save-icon" @click="updateItem(item)">check_circle</i>
+                </transition>
               </div>
             </li>
           </transition-group>
         </ul>
-        <p>
-          Made with <span class="heart">❤</span> by <a href="http://bitterend.io">Bitterend</a>
-        </p>
       </div>
+    </div>
+    <div class="footer">
+      <p>
+        Made with <span class="heart">❤</span> by <a href="http://bitterend.io">Bitterend</a>
+      </p>
     </div>
   </div>
 </template>
@@ -114,6 +144,10 @@ export default {
   data() {
     return {
       selected: '',
+      edit: {
+        id: '',
+        value: '',
+      },
     };
   },
   computed: {
@@ -127,8 +161,14 @@ export default {
     },
     updateItem(item) {
       const updated = JSON.parse(JSON.stringify(item));
-      updated.title = 'upraveno';
-      this.$store.dispatch('example/updateItem', updated);
+      if (updated.title !== this.edit.value) {
+        updated.title = this.edit.value;
+        this.$store.dispatch('example/updateItem', updated);
+      }
+      this.edit = {
+        id: '',
+        value: '',
+      };
     },
   },
   created() {
