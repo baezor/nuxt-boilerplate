@@ -42,7 +42,7 @@ export const actions = {
     });
   },
   /*
-  ** Update item in MogoDB with PUT request to ednpoint /api/item
+  ** Update item in MongoDB with PUT request to endpoint /api/item
   ** then commit mutation UPDATE_ITEM
   ** @param {object} item
   */
@@ -53,6 +53,11 @@ export const actions = {
       console.error(`${error.response.status} ${error.response.statusText}`);
     });
   },
+  /**
+  ** Get single item from MongoDB with request to endpoint /api/item/:id
+  ** then commit mutation GET_ITEM
+  ** @param {string} id of item
+  */
   getItem({ commit }, id) {
     axios.get(`${process.env.apiRoot}/item/${id}`).then((response) => {
       commit('GET_ITEM', response.data);
@@ -82,6 +87,9 @@ export const mutations = {
   GET_ITEMS(state, items) {
     state.items = items;
   },
+  /*
+  ** Store single item into the state
+  */
   GET_ITEM(state, item) {
     state.item = item;
   },
