@@ -7,11 +7,13 @@ import axios from 'axios';
 // initial state
 export const state = () => ({
   items: [],
+  item: {},
 });
 
 // getters
 export const getters = {
   getItems: state => state.items,
+  getItem: state => state.item,
 };
 
 // actions
@@ -51,6 +53,13 @@ export const actions = {
       console.error(`${error.response.status} ${error.response.statusText}`);
     });
   },
+  getItem({ commit }, id) {
+    axios.get(`${process.env.apiRoot}/item/${id}`).then((response) => {
+      commit('GET_ITEM', response.data);
+    }).catch((error) => {
+      console.error(`${error.response.status} ${error.response.statusText}`);
+    });
+  },
   /*
   ** Delete item from MongoDB with DELETE request to endpoint /api/item
   ** then commit mutation REMOVE_ITEM
@@ -72,6 +81,9 @@ export const mutations = {
   */
   GET_ITEMS(state, items) {
     state.items = items;
+  },
+  GET_ITEM(state, item) {
+    state.item = item;
   },
   /*
   ** Update item and update it in state collection

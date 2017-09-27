@@ -2,39 +2,50 @@ import { Router } from 'express'
 import Item from '../models/Item'
 
 const router = Router()
+const model = Item
 
 router.route('/item')
-  // GET items
+  // index -> GET items
   .get((req, res) => {
-    Item.find({}, (err, item) => {
+    model.find({}, (err, item) => {
       if (err)
         res.status(500).send(err);
       res.json(item);
     });
   })
-  // POST create new item
+  // create -> POST create new item
   .post((req, res) => {
-    new Item(req.body).save((err, data) => {
+    new model(req.body).save((err, data) => {
       if (err)
         res.status(500).send(err);
       res.json(data);
     });
   })
-  // PUT update existing item
+  // update -> PUT update existing item
   .put((req, res) => {
-    Item.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true }, (err, data) => {
+    model.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true }, (err, data) => {
       if (err)
         res.status(500).send(err);
       res.json(data);
     });
   })
-  // DELETE delete existing item
+  // destroy -> DELETE delete existing item
   .delete((req, res) => {
     const _id = req.query.id;
-    Item.remove({ _id }, (err, data) => {
+    model.remove({ _id }, (err, data) => {
       if (err)
         res.status(404).send(err);
       res.json(data);
+    });
+  });
+  
+router.route('/item/:id')
+  // show -> GET single item
+  .get((req, res) => {
+    model.findById(req.params.id, (err, item) => {
+      if (err)
+        res.status(404).send(err);
+      res.json(item);
     });
   });
 

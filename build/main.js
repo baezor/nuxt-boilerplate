@@ -222,35 +222,45 @@ var _Item2 = _interopRequireDefault(_Item);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express.Router)();
+var model = _Item2.default;
 
 router.route('/item')
-// GET items
+// index -> GET items
 .get(function (req, res) {
-  _Item2.default.find({}, function (err, item) {
+  model.find({}, function (err, item) {
     if (err) res.status(500).send(err);
     res.json(item);
   });
 })
-// POST create new item
+// create -> POST create new item
 .post(function (req, res) {
-  new _Item2.default(req.body).save(function (err, data) {
+  new model(req.body).save(function (err, data) {
     if (err) res.status(500).send(err);
     res.json(data);
   });
 })
-// PUT update existing item
+// update -> PUT update existing item
 .put(function (req, res) {
-  _Item2.default.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true }, function (err, data) {
+  model.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true }, function (err, data) {
     if (err) res.status(500).send(err);
     res.json(data);
   });
 })
-// DELETE delete existing item
+// destroy -> DELETE delete existing item
 .delete(function (req, res) {
   var _id = req.query.id;
-  _Item2.default.remove({ _id: _id }, function (err, data) {
+  model.remove({ _id: _id }, function (err, data) {
     if (err) res.status(404).send(err);
     res.json(data);
+  });
+});
+
+router.route('/item/:id')
+// show -> GET single item
+.get(function (req, res) {
+  model.findById(req.params.id, function (err, item) {
+    if (err) res.status(404).send(err);
+    res.json(item);
   });
 });
 

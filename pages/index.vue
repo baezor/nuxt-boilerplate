@@ -115,6 +115,7 @@
                 <transition-group name="from-left">
                   <i key="edit" v-show="selected === item._id" class="material-icons icon edit-icon" @click="edit = { id: item._id, value: item.title }">create</i>
                   <i key="delete" v-show="selected === item._id" class="material-icons icon delete-icon" @click="removeItem(item._id)">highlight_off</i>
+                  <i key="show" v-show="selected === item._id" class="material-icons icon forward-icon" @click="showItem(item._id)">forward</i>
                 </transition-group>
               </div>
               <div class="title">
@@ -129,6 +130,18 @@
             </li>
           </transition-group>
         </ul>
+        <div v-if="item._id">
+          <table>
+            <tr>
+              <th>ID</th>
+              <td>{{ item._id }}</td>
+            </tr>
+            <tr>
+              <th>Title</th>
+              <td>{{ item.title }}</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
     <div class="footer">
@@ -154,8 +167,14 @@ export default {
     items() {
       return this.$store.getters['example/getItems'];
     },
+    item() {
+      return this.$store.getters['example/getItem'];
+    },
   },
   methods: {
+    showItem(id) {
+      this.$store.dispatch('example/getItem', id);
+    },
     removeItem(id) {
       this.$store.dispatch('example/deleteItem', id);
     },
